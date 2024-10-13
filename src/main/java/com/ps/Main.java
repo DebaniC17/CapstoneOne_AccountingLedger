@@ -1,6 +1,9 @@
 package com.ps;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -58,25 +61,67 @@ public class Main {
     public static void loadTransactionsFromFile() {
 
         try {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("transactions.csv"));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("transactions.csv"));
 
-        String firstLine = bufferedReader.readLine();
-        String input;
+            String firstLine = bufferedReader.readLine();
+            String input;
 
-        while ((input = bufferedReader.readLine()) != null) {
-            String[] transactionsArr = input.split("\\|");
-            String date = transactionsArr[0];
-            String time = transactionsArr[1];
-            String description = transactionsArr[2];
-            String vendor = transactionsArr[3];
-            float amount = Float.parseFloat(transactionsArr[4]);
+            while ((input = bufferedReader.readLine()) != null) {
+                String[] transactionsArr = input.split("\\|");
+                String date = transactionsArr[0];
+                String time = transactionsArr[1];
+                String description = transactionsArr[2];
+                String vendor = transactionsArr[3];
+                float amount = Float.parseFloat(transactionsArr[4]);
 
-            allTransactions.add(new Transaction(date, time, description, vendor, amount));
+                allTransactions.add(new Transaction(date, time, description, vendor, amount));
 
-        }
-        bufferedReader.close();
-    } catch (Exception e) {
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void addDeposit() {
+
+        System.out.println("Command for adding a deposit");
+        //add code
+        System.out.println("Please enter the details of the deposit...");
+
+        System.out.print("Date: ");
+        String date = scanner.nextLine();
+
+        System.out.print("Time: ");
+        String time = scanner.nextLine();
+
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
+
+        System.out.print("Name: ");
+        String vendor = scanner.nextLine();
+
+        System.out.println("Amount: ");
+        int amount = scanner.nextInt();
+
+        Transaction transaction = new Transaction(date, time, description, vendor, amount);
+        allTransactions.add(transaction);
+
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions,csv", true));
+            bufferedWriter.write(String.format("\n%s|%s|%s|%s|%f",
+                    transaction.getDate(),
+                    transaction.getTime(),
+                    transaction.getDescription(),
+                    transaction.getVendor(),
+                    transaction.getAmount()
+            ));
+
+            bufferedWriter.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
 }
