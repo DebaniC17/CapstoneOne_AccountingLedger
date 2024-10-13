@@ -1,4 +1,7 @@
 package com.ps;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -6,8 +9,10 @@ import java.util.Scanner;
 public class Main {
 
     static Scanner scanner = new Scanner(System.in);
+    static ArrayList<Transaction> allTransactions = new ArrayList<>();
 
     public static void main(String[] args) {
+        loadTransactionsFromFile();
 
         int mainMenuCommand;
 
@@ -49,4 +54,29 @@ public class Main {
         } while (mainMenuCommand != 0);
 
     }
+
+    public static void loadTransactionsFromFile() {
+
+        try {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("transactions.csv"));
+
+        String firstLine = bufferedReader.readLine();
+        String input;
+
+        while ((input = bufferedReader.readLine()) != null) {
+            String[] transactionsArr = input.split("\\|");
+            String date = transactionsArr[0];
+            String time = transactionsArr[1];
+            String description = transactionsArr[2];
+            String vendor = transactionsArr[3];
+            float amount = Float.parseFloat(transactionsArr[4]);
+
+            allTransactions.add(new Transaction(date, time, description, vendor, amount));
+
+        }
+        bufferedReader.close();
+    } catch (Exception e) {
+            e.printStackTrace();
+        }
+        }
 }
