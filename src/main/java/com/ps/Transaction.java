@@ -66,4 +66,13 @@ public class Transaction {
                 ", amount=" + amount +
                 '}';
     }
+    public boolean deposit() {
+        return this.amount > 0;
+
+    }
+
+    public boolean payment() {
+        return this.amount < 0;
+
+    }
 }

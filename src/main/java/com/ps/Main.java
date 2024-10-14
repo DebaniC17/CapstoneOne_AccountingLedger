@@ -164,6 +164,7 @@ public class Main {
             e.printStackTrace();
         }
     }
+
     public static void displayLedger() {
 
         int subMenuCommand;
@@ -174,7 +175,112 @@ public class Main {
             System.out.println("2) Display deposits");
             System.out.println("3) Display payments");
             System.out.println("4) Display reports screen");
-            System.out.println("5) Go back to home page");
+            System.out.println("0) Go back to home page");
+            System.out.println("Command: ");
+
+            subMenuCommand = scanner.nextInt();
+
+            switch (subMenuCommand) {
+                case 1:
+                    allTransactions();
+                    break;
+
+                case 2:
+                    allDeposits();
+                    break;
+
+                case 3:
+                    allPayments();
+                    break;
+
+                case 4:
+                    displayReports();
+                    break;
+
+                case 0:
+                    System.out.println("Going back to home page...");
+                    break;
+
+                default:
+                    System.out.println("Command not found, please try again");
+
+
+            }
+
+        } while (subMenuCommand != 0);
+
     }
 
+    public static void allTransactions() {
+        System.out.println("Display all Entries");
+        for (int i = 0; i < allTransactions.size(); i++) {
+            System.out.println(allTransactions.get(i));
+        }
+    }
+
+    public static void allDeposits() {
+        System.out.println("Display all deposits");
+        for (int i = 0; i< allTransactions.size(); i++) {
+            Transaction allDeposit = allTransactions.get(i);
+            if (Transaction.deposit()) {
+                System.out.println(allDeposit);
+            }
+        }
+    }
+
+    public static void allPayments() {
+        System.out.println("Display all payments");
+        for (int i = 0; i< allTransactions.size(); i++) {
+            Transaction allPayments = allTransactions.get(i);
+            if (Transaction.payment()) {
+                System.out.println(allPayments);
+            }
+        }
+    }
+
+    public static void displayReports() {
+
+        int subMenuCommand;
+
+        do {
+            System.out.println("Please enter your Command");
+            System.out.println("1) Month to date");
+            System.out.println("2) Previous month");
+            System.out.println("3) Year to date");
+            System.out.println("4) Previous year");
+            System.out.println("5) Search by vendor");
+            System.out.println("0) Go back to home page");
+            System.out.println("Command: ");
+
+            subMenuCommand = scanner.nextInt();
+
+            switch (subMenuCommand) {
+                case 1:
+                    displayMonthToDate();
+                    break;
+
+                case 2:
+                    displayPreviousMonth();
+                    break;
+
+                case 3:
+                    displayYearToDate();
+                    break;
+
+                case 4:
+                    displayPreviousYear();
+                    break;
+
+                case 5:
+                    searchByVendor();
+                    break;
+
+                case 0:
+                    System.out.println("Going back to home page...");
+
+                default:
+                    System.out.println("Command not found, please try again");
+            }
+        } while (subMenuCommand != 0);
+    }
 }
