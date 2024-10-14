@@ -164,6 +164,17 @@ public class Main {
             e.printStackTrace();
         }
     }
+    public static void displayLedger() {
 
+        int subMenuCommand;
+
+        do {
+            System.out.println("Please enter your command: ");
+            System.out.println("1) Display all entries");
+            System.out.println("2) Display deposits");
+            System.out.println("3) Display payments");
+            System.out.println("4) Display reports screen");
+            System.out.println("5) Go back to home page");
+    }
 
 }
