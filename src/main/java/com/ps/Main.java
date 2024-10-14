@@ -29,7 +29,7 @@ public class Main {
             System.out.println("Command: ");
 
             try {
-                mainMenuCommand = commandScanner.nextInt();
+                mainMenuCommand = scanner.nextInt();
             } catch (InputMismatchException ime) {
                 mainMenuCommand = 0;
             }
@@ -101,7 +101,7 @@ public class Main {
         System.out.print("Name: ");
         String vendor = scanner.nextLine();
 
-        System.out.println("Amount: ");
+        System.out.print("Amount: ");
         int amount = scanner.nextInt();
 
         Transaction transaction = new Transaction(date, time, description, vendor, amount);
@@ -123,5 +123,47 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+    public static void makePayment() {
+
+        System.out.println("Command for making a payment");
+        //add code
+        System.out.println("Please enter the details of the payment...");
+
+        System.out.print("Date: ");
+        String date = scanner.nextLine();
+
+        System.out.print("Time: ");
+        String time = scanner.nextLine();
+
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
+
+        System.out.print("Name: ");
+        String vendor = scanner.nextLine();
+
+        System.out.print("Amount: ");
+        int amount = scanner.nextInt();
+
+        Transaction transaction = new Transaction(date, time, description, vendor, amount);
+        allTransactions.add(transaction);
+
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions,csv", true));
+            bufferedWriter.write(String.format("\n%s|%s|%s|%s|%f",
+                    transaction.getDate(),
+                    transaction.getTime(),
+                    transaction.getDescription(),
+                    transaction.getVendor(),
+                    transaction.getAmount()
+            ));
+
+            bufferedWriter.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
