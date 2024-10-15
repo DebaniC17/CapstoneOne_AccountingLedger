@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -220,20 +222,20 @@ public class Main {
 
     public static void allDeposits() {
         System.out.println("Display all deposits");
-        for (int i = 0; i< allTransactions.size(); i++) {
-            Transaction allDeposit = allTransactions.get(i);
-            if (Transaction.deposit()) {
-                System.out.println(allDeposit);
+        for (int i = 0; i < allTransactions.size(); i++) {
+            Transaction transaction = allTransactions.get(i);
+            if (transaction.deposit()) {
+                System.out.println(transaction);
             }
         }
     }
 
     public static void allPayments() {
         System.out.println("Display all payments");
-        for (int i = 0; i< allTransactions.size(); i++) {
-            Transaction allPayments = allTransactions.get(i);
-            if (Transaction.payment()) {
-                System.out.println(allPayments);
+        for (int i = 0; i < allTransactions.size(); i++) {
+            Transaction transaction = allTransactions.get(i);
+            if (transaction.payment()) {
+                System.out.println(transaction);
             }
         }
     }
@@ -283,4 +285,113 @@ public class Main {
             }
         } while (subMenuCommand != 0);
     }
+
+    public static void displayMonthToDate() {
+        LocalDate currentDate = LocalDate.now();
+        int currentMonth = currentDate.getMonthValue();
+        int currentYear = currentDate.getYear();
+
+        System.out.println("Month to date transactions: ");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        ArrayList<Transaction> monthlyTransactions = new ArrayList<>();
+
+        for (Transaction transaction : allTransactions) {
+            LocalDate transactionDate = LocalDate.parse(transaction.getDate(), dateFormatter);
+            if (transactionDate.getMonthValue() == currentMonth && transactionDate.getYear() == currentYear) {
+                monthlyTransactions.add(transaction);
+            }
+
+        }
+        for (Transaction transaction : monthlyTransactions) {
+            System.out.println(transaction);
+        }
+
+    }
+
+    public static void displayPreviousMonth() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate previousMonthDate = currentDate.minusMonths(1);
+        int previousMonth = previousMonthDate.getMonthValue();
+        int previousYear = previousMonthDate.getYear();
+
+        System.out.println("Previous month transactions: ");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        ArrayList<Transaction> previousMonthTransactions = new ArrayList<>();
+
+        for (Transaction transaction : allTransactions) {
+            LocalDate transactionDate = LocalDate.parse(transaction.getDate(), dateFormatter);
+            if (transactionDate.getMonthValue() == previousMonth && transactionDate.getYear() == previousYear) {
+             previousMonthTransactions.add(transaction);
+            }
+        }
+
+        for (Transaction transaction : previousMonthTransactions) {
+            System.out.println(transaction);
+        }
+
+    }
+    public static void displayYearToDate() {
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+
+        System.out.println("Year to date transactions: ");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        ArrayList<Transaction> yearlyTransactions = new ArrayList<>();
+
+        for (Transaction transaction : allTransactions) {
+            LocalDate transactionDate = LocalDate.parse(transaction.getDate(), dateFormatter);
+            if (transactionDate.getYear() == currentYear) {
+                yearlyTransactions.add(transaction);
+            }
+
+        }
+        for (Transaction transaction : yearlyTransactions) {
+            System.out.println(transaction);
+        }
+
+    }
+    public static void displayPreviousYear() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate previousMonthDate = currentDate.minusYears(1);
+        int previousYear = previousMonthDate.getYear();
+
+        System.out.println("Previous year transactions: ");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        ArrayList<Transaction> previousYearTransactions = new ArrayList<>();
+
+        for (Transaction transaction : allTransactions) {
+            LocalDate transactionDate = LocalDate.parse(transaction.getDate(), dateFormatter);
+            if (transactionDate.getYear() == previousYear) {
+                previousYearTransactions.add(transaction);
+            }
+        }
+
+        for (Transaction transaction : previousYearTransactions) {
+            System.out.println(transaction);
+        }
+
+    }
+
+    public static void searchByVendor(){
+        System.out.println("Please enter vendor's name: ");
+        String nameToSearch = scanner.nextLine();
+
+        for(int i=0; i < allTransactions.size(); i++) {
+            Transaction vendorsTransaction = allTransactions.get(i);
+            if (vendorsTransaction.getVendor().equals(nameToSearch)) {
+                System.out.println(vendorsTransaction);
+            }
+        }
+
+    }
+
+
 }
