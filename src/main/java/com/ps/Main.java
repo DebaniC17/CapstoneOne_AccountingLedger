@@ -5,16 +5,18 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 
 
 public class Main {
 
     static Scanner scanner = new Scanner(System.in);
     static ArrayList<Transaction> allTransactions = new ArrayList<>();
+
 
     public static void main(String[] args) {
         loadTransactionsFromFile();
@@ -25,10 +27,10 @@ public class Main {
             System.out.println("Welcome to Accounting Ledger Application");
             System.out.println("Please enter your command: ");
             System.out.println("1) To Add Deposit");
-            System.out.println("2) To Make Payment (Deposit)");
+            System.out.println("2) To Make Payment (Debit)");
             System.out.println("3) Display Ledger Screen");
             System.out.println("0) To Exit Application");
-            System.out.println("Command: ");
+            System.out.print("Command: ");
 
             try {
                 mainMenuCommand = scanner.nextInt();
@@ -91,10 +93,12 @@ public class Main {
         //add code
         System.out.println("Please enter the details of the deposit...");
 
-        System.out.print("Date: ");
+        scanner.nextLine();
+        System.out.print("Date(yyyy-MM-dd): ");
         String date = scanner.nextLine();
 
-        System.out.print("Time: ");
+
+        System.out.print("Time(HH:mm:ss): ");
         String time = scanner.nextLine();
 
         System.out.print("Description: ");
@@ -110,7 +114,7 @@ public class Main {
         allTransactions.add(transaction);
 
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions,csv", true));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
             bufferedWriter.write(String.format("\n%s|%s|%s|%s|%f",
                     transaction.getDate(),
                     transaction.getTime(),
@@ -132,10 +136,12 @@ public class Main {
         //add code
         System.out.println("Please enter the details of the payment...");
 
-        System.out.print("Date: ");
+        scanner.nextLine();
+        System.out.print("Date(yyyy-MM-dd): ");
         String date = scanner.nextLine();
 
-        System.out.print("Time: ");
+
+        System.out.print("Time(HH:mm:ss): ");
         String time = scanner.nextLine();
 
         System.out.print("Description: ");
@@ -145,9 +151,13 @@ public class Main {
         String vendor = scanner.nextLine();
 
         System.out.print("Amount: ");
-        int amount = scanner.nextInt();
+        int newAmount = scanner.nextInt();
 
-        Transaction transaction = new Transaction(date, time, description, vendor, amount);
+        if (newAmount > 0 ){
+            newAmount = -newAmount;
+        }
+
+        Transaction transaction = new Transaction(date, time, description, vendor, newAmount);
         allTransactions.add(transaction);
 
         try {
@@ -178,7 +188,7 @@ public class Main {
             System.out.println("3) Display payments");
             System.out.println("4) Display reports screen");
             System.out.println("0) Go back to home page");
-            System.out.println("Command: ");
+            System.out.print("Command: ");
 
             subMenuCommand = scanner.nextInt();
 
@@ -252,7 +262,7 @@ public class Main {
             System.out.println("4) Previous year");
             System.out.println("5) Search by vendor");
             System.out.println("0) Go back to home page");
-            System.out.println("Command: ");
+            System.out.print("Command: ");
 
             subMenuCommand = scanner.nextInt();
 
@@ -293,19 +303,43 @@ public class Main {
 
         System.out.println("Month to date transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        ArrayList<Transaction> monthlyTransactions = new ArrayList<>();
+        for (int i = 0; i < allTransactions.size(); i++) {
+            String newTransactionDate = allTransactions.get(i).getDate();
+            LocalDate transactionDate = LocalDate.parse(newTransactionDate, dateFormatter);
 
-        for (Transaction transaction : allTransactions) {
-            LocalDate transactionDate = LocalDate.parse(transaction.getDate(), dateFormatter);
-            if (transactionDate.getMonthValue() == currentMonth && transactionDate.getYear() == currentYear) {
-                monthlyTransactions.add(transaction);
+            int transactionMonth = transactionDate.getMonthValue();
+            int transactionYear = transactionDate.getYear();
+
+            if (transactionMonth == currentMonth && transactionYear == currentYear) {
+                System.out.println(allTransactions.get(i));
+
             }
 
         }
-        for (Transaction transaction : monthlyTransactions) {
-            System.out.println(transaction);
+
+        System.out.println( " Printing all transactions from the month to date methods");
+        System.out.println(allTransactions);
+
+        ArrayList<Transaction> test = new ArrayList<>();
+
+        Collections.sort(allTransactions, (b,a) -> {
+
+                    if (LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()))
+                            .isBefore(LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()))
+                            )) {
+
+                        // System.out.println(a);
+                        test.add(0, b);
+                    } else {
+                        test.add(b);
+                    }
+                    return allTransactions.size();
+                }
+        );
+
+        for(Transaction trans:test){
+            System.out.println(trans);
         }
 
     }
@@ -318,7 +352,7 @@ public class Main {
 
         System.out.println("Previous month transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+       // DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         ArrayList<Transaction> previousMonthTransactions = new ArrayList<>();
 
@@ -331,6 +365,9 @@ public class Main {
 
         for (Transaction transaction : previousMonthTransactions) {
             System.out.println(transaction);
+        }
+        if (previousMonthTransactions.isEmpty()) {
+            System.out.println("No transactions found");
         }
 
     }
@@ -363,7 +400,7 @@ public class Main {
 
         System.out.println("Previous year transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+      //  DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         ArrayList<Transaction> previousYearTransactions = new ArrayList<>();
 
@@ -381,12 +418,15 @@ public class Main {
     }
 
     public static void searchByVendor(){
-        System.out.println("Please enter vendor's name: ");
+        System.out.print("Please enter vendor's name: ");
+
+
+        scanner.nextLine();
         String nameToSearch = scanner.nextLine();
 
         for(int i=0; i < allTransactions.size(); i++) {
             Transaction vendorsTransaction = allTransactions.get(i);
-            if (vendorsTransaction.getVendor().equals(nameToSearch)) {
+            if (vendorsTransaction.getVendor().equalsIgnoreCase(nameToSearch)) {
                 System.out.println(vendorsTransaction);
             }
         }
