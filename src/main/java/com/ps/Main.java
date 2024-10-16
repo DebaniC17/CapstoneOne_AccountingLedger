@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 
 
@@ -90,7 +89,7 @@ public class Main {
     public static void addDeposit() {
 
         System.out.println("Command for adding a deposit");
-        //add code
+
         System.out.println("Please enter the details of the deposit...");
 
         scanner.nextLine();
@@ -108,32 +107,40 @@ public class Main {
         String vendor = scanner.nextLine();
 
         System.out.print("Amount: ");
-        int amount = scanner.nextInt();
+        float amount = scanner.nextFloat();
 
-        Transaction transaction = new Transaction(date, time, description, vendor, amount);
-        allTransactions.add(transaction);
+        if (amount > 0) {
+            Transaction transaction = new Transaction(date, time, description, vendor, amount);
+            allTransactions.add(transaction);
 
-        try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
-            bufferedWriter.write(String.format("\n%s|%s|%s|%s|%f",
-                    transaction.getDate(),
-                    transaction.getTime(),
-                    transaction.getDescription(),
-                    transaction.getVendor(),
-                    transaction.getAmount()
-            ));
+            try {
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+                bufferedWriter.write(String.format("\n%s|%s|%s|%s|%.2f",
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
+                        transaction.getAmount()
+                ));
 
-            bufferedWriter.close();
+                bufferedWriter.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                System.out.println("Your deposit was successfully added, thank you and goodbye!");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            System.out.println("Command not found, going back to home page...");
         }
     }
+
 
     public static void makePayment() {
 
         System.out.println("Command for making a payment");
-        //add code
+
         System.out.println("Please enter the details of the payment...");
 
         scanner.nextLine();
@@ -151,29 +158,35 @@ public class Main {
         String vendor = scanner.nextLine();
 
         System.out.print("Amount: ");
-        int newAmount = scanner.nextInt();
+        float newAmount = scanner.nextFloat();
 
-        if (newAmount > 0 ){
+        if (newAmount > 0) {
             newAmount = -newAmount;
-        }
 
-        Transaction transaction = new Transaction(date, time, description, vendor, newAmount);
-        allTransactions.add(transaction);
 
-        try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions,csv", true));
-            bufferedWriter.write(String.format("\n%s|%s|%s|%s|%f",
-                    transaction.getDate(),
-                    transaction.getTime(),
-                    transaction.getDescription(),
-                    transaction.getVendor(),
-                    transaction.getAmount()
-            ));
+            Transaction transaction = new Transaction(date, time, description, vendor, newAmount);
+            allTransactions.add(transaction);
 
-            bufferedWriter.close();
+            try {
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions,csv", true));
+                bufferedWriter.write(String.format("\n%s|%s|%s|%s|%.2f",
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
+                        transaction.getAmount()
+                ));
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                bufferedWriter.close();
+
+                System.out.println("Your payment was successfully added, thank you and goodbye!");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            System.out.println("Command not found, going back to home page...");
         }
     }
 
@@ -301,6 +314,8 @@ public class Main {
         int currentMonth = currentDate.getMonthValue();
         int currentYear = currentDate.getYear();
 
+        ArrayList<Transaction> filteredMonthlyTransactions = new ArrayList<>();
+
         System.out.println("Month to date transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -321,26 +336,24 @@ public class Main {
         System.out.println( " Printing all transactions from the month to date methods");
         System.out.println(allTransactions);
 
-        ArrayList<Transaction> test = new ArrayList<>();
+        //   ArrayList<Transaction> test = new ArrayList<>();
 
-        Collections.sort(allTransactions, (b,a) -> {
+        Collections.sort(filteredMonthlyTransactions, (a,b) -> {
 
                     if (LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()))
                             .isBefore(LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()))
                             )) {
 
                         // System.out.println(a);
-                        test.add(0, b);
+                        filteredMonthlyTransactions.add(0, b);
                     } else {
-                        test.add(b);
+                        filteredMonthlyTransactions.add(b);
                     }
-                    return allTransactions.size();
+//                           return filteredMonthlyTransactions.size(); // both ways print out in descending order,but reprints alltransactions on one line afterwards
+                    return 0;
                 }
         );
-
-        for(Transaction trans:test){
-            System.out.println(trans);
-        }
+        // what if instead of one big expression lines 343-345, i could make them their own variables to later compare them in the return statement
 
     }
 
@@ -352,14 +365,14 @@ public class Main {
 
         System.out.println("Previous month transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-       // DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         ArrayList<Transaction> previousMonthTransactions = new ArrayList<>();
 
         for (Transaction transaction : allTransactions) {
             LocalDate transactionDate = LocalDate.parse(transaction.getDate(), dateFormatter);
             if (transactionDate.getMonthValue() == previousMonth && transactionDate.getYear() == previousYear) {
-             previousMonthTransactions.add(transaction);
+                previousMonthTransactions.add(transaction);
             }
         }
 
@@ -371,6 +384,7 @@ public class Main {
         }
 
     }
+
     public static void displayYearToDate() {
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
@@ -393,6 +407,7 @@ public class Main {
         }
 
     }
+
     public static void displayPreviousYear() {
         LocalDate currentDate = LocalDate.now();
         LocalDate previousMonthDate = currentDate.minusYears(1);
@@ -400,7 +415,7 @@ public class Main {
 
         System.out.println("Previous year transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-      //  DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        //  DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         ArrayList<Transaction> previousYearTransactions = new ArrayList<>();
 
@@ -417,14 +432,14 @@ public class Main {
 
     }
 
-    public static void searchByVendor(){
+    public static void searchByVendor() {
         System.out.print("Please enter vendor's name: ");
 
 
         scanner.nextLine();
         String nameToSearch = scanner.nextLine();
 
-        for(int i=0; i < allTransactions.size(); i++) {
+        for (int i = 0; i < allTransactions.size(); i++) {
             Transaction vendorsTransaction = allTransactions.get(i);
             if (vendorsTransaction.getVendor().equalsIgnoreCase(nameToSearch)) {
                 System.out.println(vendorsTransaction);
