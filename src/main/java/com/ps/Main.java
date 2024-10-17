@@ -13,7 +13,8 @@ import java.util.*;
 
 public class Main {
 
-    static Scanner scanner = new Scanner(System.in);
+    static Scanner commandScanner = new Scanner(System.in);
+    static Scanner inputScanner = new Scanner(System.in);
     static ArrayList<Transaction> allTransactions = new ArrayList<>();
 
 
@@ -23,8 +24,8 @@ public class Main {
         int mainMenuCommand;
 
         do {
-            System.out.println("Welcome to Accounting Ledger Application");
-            System.out.println("Please enter your command: ");
+            System.out.println("Welcome To The Accounting Ledger Application!");
+            System.out.println("Please Enter Your Command: ");
             System.out.println("1) To Add Deposit");
             System.out.println("2) To Make Payment (Debit)");
             System.out.println("3) Display Ledger Screen");
@@ -32,7 +33,7 @@ public class Main {
             System.out.print("Command: ");
 
             try {
-                mainMenuCommand = scanner.nextInt();
+                mainMenuCommand = commandScanner.nextInt();
             } catch (InputMismatchException ime) {
                 mainMenuCommand = 0;
             }
@@ -51,13 +52,15 @@ public class Main {
                     break;
 
                 case 0:
-                    System.out.println("Exiting...");
+                    System.out.println("Exiting Application, Goodbye...");
+                    System.exit(0);
+                    break;
 
                 default:
-                    System.out.println("Command not found, please try again");
+                    System.out.println("Command Not Found, Please Try Again");
             }
 
-        } while (mainMenuCommand != 0);
+        } while (true);
 
     }
 
@@ -88,26 +91,26 @@ public class Main {
 
     public static void addDeposit() {
 
-        System.out.println("Command for adding a deposit");
+        System.out.println("Welcome To The Deposit Screen!");
 
-        System.out.println("Please enter the details of the deposit...");
+        System.out.println("Please Enter The Details Of The Deposit...");
 
-        scanner.nextLine();
+        //  inputScanner.nextLine();
         System.out.print("Date(yyyy-MM-dd): ");
-        String date = scanner.nextLine();
+        String date = inputScanner.nextLine();
 
 
         System.out.print("Time(HH:mm:ss): ");
-        String time = scanner.nextLine();
+        String time = inputScanner.nextLine();
 
         System.out.print("Description: ");
-        String description = scanner.nextLine();
+        String description = inputScanner.nextLine();
 
         System.out.print("Name: ");
-        String vendor = scanner.nextLine();
+        String vendor = inputScanner.nextLine();
 
         System.out.print("Amount: ");
-        float amount = scanner.nextFloat();
+        float amount = inputScanner.nextFloat();
 
         if (amount > 0) {
             Transaction transaction = new Transaction(date, time, description, vendor, amount);
@@ -125,40 +128,83 @@ public class Main {
 
                 bufferedWriter.close();
 
-                System.out.println("Your deposit was successfully added, thank you and goodbye!");
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
+            System.out.println("Your Deposit Was Successfully Added!");
+
+
+            int subMenuCommand;
+
+            do {
+                System.out.println("What Would You Like To Do Next?");
+                System.out.println("1) Add Another Deposit");
+                System.out.println("2) Go To Home Page");
+                System.out.println("0) Exit The Application");
+                System.out.print("Command: ");
+
+                try {
+                    subMenuCommand = commandScanner.nextInt();
+                } catch (InputMismatchException ime) {
+                    ime.printStackTrace();
+                    subMenuCommand = 0;
+                }
+
+                switch (subMenuCommand) {
+                    case 1:
+                        System.out.println(" Back To..");
+                        break;
+
+                    case 2:
+                        System.out.println("Going Back To Home Page...");
+                        break;
+
+                    case 0:
+                        System.out.println("Exiting Application, Goodbye...");
+                        System.exit(0);
+                        break;
+
+                    default:
+                        System.out.println("Command Not Found Please Try Again.");
+
+
+                }
+                while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0) ;
+
+            } while (subMenuCommand == 1);
+
         } else {
-            System.out.println("Command not found, going back to home page...");
+            System.out.println("Command Not Found.");
+
         }
     }
 
 
+
     public static void makePayment() {
 
-        System.out.println("Command for making a payment");
+        System.out.println("Welcome To The Payment Screen!");
 
-        System.out.println("Please enter the details of the payment...");
+        System.out.println("Please Enter The Details Of The Payment...");
 
-        scanner.nextLine();
+        inputScanner.nextLine();
         System.out.print("Date(yyyy-MM-dd): ");
-        String date = scanner.nextLine();
+        String date = inputScanner.nextLine();
 
 
         System.out.print("Time(HH:mm:ss): ");
-        String time = scanner.nextLine();
+        String time = inputScanner.nextLine();
 
         System.out.print("Description: ");
-        String description = scanner.nextLine();
+        String description = inputScanner.nextLine();
 
         System.out.print("Name: ");
-        String vendor = scanner.nextLine();
+        String vendor = inputScanner.nextLine();
 
         System.out.print("Amount: ");
-        float newAmount = scanner.nextFloat();
+        float newAmount = inputScanner.nextFloat();
 
         if (newAmount > 0) {
             newAmount = -newAmount;
@@ -179,14 +225,14 @@ public class Main {
 
                 bufferedWriter.close();
 
-                System.out.println("Your payment was successfully added, thank you and goodbye!");
+                System.out.println("Your Payment Was Successfully Added, Thank You And Goodbye!");
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         } else {
-            System.out.println("Command not found, going back to home page...");
+            System.out.println("Command Not Found, Going Back To Home Page...");
         }
     }
 
@@ -195,16 +241,16 @@ public class Main {
         int subMenuCommand;
 
         do {
-            System.out.println("Welcome to the Ledger Page!");
-            System.out.println("Please enter your command: ");
-            System.out.println("1) Display all entries");
-            System.out.println("2) Display deposits");
-            System.out.println("3) Display payments");
-            System.out.println("4) Display reports screen");
-            System.out.println("0) Go back to home page");
+            System.out.println("Welcome To The Ledger Page!");
+            System.out.println("Please Enter Your Command: ");
+            System.out.println("1) Display All Entries");
+            System.out.println("2) Display Deposits");
+            System.out.println("3) Display Payments");
+            System.out.println("4) Display Reports Page");
+            System.out.println("0) Go Back To Home Page");
             System.out.print("Command: ");
 
-            subMenuCommand = scanner.nextInt();
+            subMenuCommand = commandScanner.nextInt();
 
             switch (subMenuCommand) {
                 case 1:
@@ -224,11 +270,11 @@ public class Main {
                     break;
 
                 case 0:
-                    System.out.println("Going back to home page...");
+                    System.out.println("Going Back To Home Page...");
                     break;
 
                 default:
-                    System.out.println("Command not found, please try again");
+                    System.out.println("Command Not Found, Please Try Again");
 
 
             }
@@ -238,14 +284,14 @@ public class Main {
     }
 
     public static void allTransactions() {
-        System.out.println("Display all Entries");
+        System.out.println("Display All Transactions");
         for (int i = 0; i < allTransactions.size(); i++) {
             System.out.println(allTransactions.get(i));
         }
     }
 
     public static void allDeposits() {
-        System.out.println("Display all deposits");
+        System.out.println("Display All Deposits");
         for (int i = 0; i < allTransactions.size(); i++) {
             Transaction transaction = allTransactions.get(i);
             if (transaction.deposit()) {
@@ -255,7 +301,7 @@ public class Main {
     }
 
     public static void allPayments() {
-        System.out.println("Display all payments");
+        System.out.println("Display All Payments");
         for (int i = 0; i < allTransactions.size(); i++) {
             Transaction transaction = allTransactions.get(i);
             if (transaction.payment()) {
@@ -269,16 +315,17 @@ public class Main {
         int subMenuCommand;
 
         do {
-            System.out.println("Please enter your Command");
-            System.out.println("1) Month to date");
-            System.out.println("2) Previous month");
-            System.out.println("3) Year to date");
-            System.out.println("4) Previous year");
-            System.out.println("5) Search by vendor");
-            System.out.println("0) Go back to ledger page");
+            System.out.println("Welcome To The Reports Page!");
+            System.out.println("Please Enter Your Command");
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year To Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search By Vendor");
+            System.out.println("0) Go Back To Ledger Page");
             System.out.print("Command: ");
 
-            subMenuCommand = scanner.nextInt();
+            subMenuCommand = commandScanner.nextInt();
 
             switch (subMenuCommand) {
                 case 1:
@@ -302,10 +349,10 @@ public class Main {
                     break;
 
                 case 0:
-                    System.out.println("Going back to Ledger Page...");
+                    System.out.println("Going Back To Ledger Page...");
 
                 default:
-                    System.out.println("Command not found, please try again");
+                    System.out.println("Command Not Found, Please Try Again");
             }
         } while (subMenuCommand != 0);
     }
@@ -317,7 +364,7 @@ public class Main {
 
         ArrayList<Transaction> filteredMonthlyTransactions = new ArrayList<>();
 
-        System.out.println("Month to date transactions: ");
+        System.out.println("Month To Date Transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         for (int i = 0; i < allTransactions.size(); i++) {
@@ -334,7 +381,7 @@ public class Main {
             }
         }
 
-        System.out.println("Printing all transactions from the month to date methods");
+        System.out.println("Printing All Transactions From The Month To Date Methods");
         System.out.println(allTransactions);
 
         Collections.sort(filteredMonthlyTransactions, (a, b) -> {
@@ -355,7 +402,7 @@ public class Main {
         }
         //sadly still printing in ascending order >.<
         //keep researching comparedTo() method
-        //or i could lookup how to read a file backwards
+        //or i could lookup how to read the file backwards
     }
 
     public static void displayPreviousMonth() {
@@ -364,7 +411,7 @@ public class Main {
         int previousMonth = previousMonthDate.getMonthValue();
         int previousYear = previousMonthDate.getYear();
 
-        System.out.println("Previous month transactions: ");
+        System.out.println("Previous Month Transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         ArrayList<Transaction> previousMonthTransactions = new ArrayList<>();
@@ -380,7 +427,7 @@ public class Main {
             System.out.println(transaction);
         }
         if (previousMonthTransactions.isEmpty()) {
-            System.out.println("No transactions found");
+            System.out.println("No Transactions Found");
         }
 
         Collections.sort(previousMonthTransactions, (a,b) -> {
@@ -402,9 +449,8 @@ public class Main {
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
 
-        System.out.println("Year to date transactions: ");
+        System.out.println("Year To Date Transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-       // DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         ArrayList<Transaction> yearlyTransactions = new ArrayList<>();
 
@@ -426,9 +472,8 @@ public class Main {
         LocalDate previousMonthDate = currentDate.minusYears(1);
         int previousYear = previousMonthDate.getYear();
 
-        System.out.println("Previous year transactions: ");
+        System.out.println("Previous Year Transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        //  DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         ArrayList<Transaction> previousYearTransactions = new ArrayList<>();
 
@@ -446,11 +491,11 @@ public class Main {
     }
 
     public static void searchByVendor() {
-        System.out.print("Please enter vendor's name: ");
+        System.out.print("Please Enter Vendor's Name: ");
 
 
-        scanner.nextLine();
-        String nameToSearch = scanner.nextLine();
+        inputScanner.nextLine();
+        String nameToSearch = inputScanner.nextLine();
 
         for (int i = 0; i < allTransactions.size(); i++) {
             Transaction vendorsTransaction = allTransactions.get(i);
