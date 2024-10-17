@@ -154,7 +154,7 @@ public class Main {
 
                 switch (subMenuCommand) {
                     case 1:
-                        System.out.println(" Back To..");
+                        System.out.println("Back To The Deposit Screen!");
                         break;
 
                     case 2:
@@ -167,7 +167,7 @@ public class Main {
                         break;
 
                     default:
-                        System.out.println("Command Not Found Please Try Again.");
+                        System.out.println("Command Not Found. Please Try Again.");
 
 
                 }
@@ -189,7 +189,7 @@ public class Main {
 
         System.out.println("Please Enter The Details Of The Payment...");
 
-        inputScanner.nextLine();
+      //  inputScanner.nextLine();
         System.out.print("Date(yyyy-MM-dd): ");
         String date = inputScanner.nextLine();
 
@@ -225,14 +225,49 @@ public class Main {
 
                 bufferedWriter.close();
 
-                System.out.println("Your Payment Was Successfully Added, Thank You And Goodbye!");
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            System.out.println("Your Payment Was Successfully Added!");
+
+            int subMenuCommand;
+
+            do {
+                System.out.println("What Would You Like To Do Next?");
+                System.out.println("1) Make Another Payment");
+                System.out.println("2) Go To Home Page");
+                System.out.println("0) Exit Application");
+
+                try {
+                    subMenuCommand = commandScanner.nextInt();
+                } catch (InputMismatchException ime) {
+                    ime.printStackTrace();
+                    subMenuCommand = 0;
+                }
+
+                switch (subMenuCommand) {
+                    case 1:
+                        System.out.println("Welcome Back To The Payment Screen!");
+                        break;
+
+                    case 2:
+                        System.out.println("Going To Hope Page...");
+                        break;
+
+                    case 0:
+                        System.out.println("Exiting Application, Goodbye...");
+                        System.exit(0);
+                        break;
+
+                    default:
+                        System.out.println("Command Not Found. Please Try Again.");
+                }
+                while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0);
+
+            } while (subMenuCommand == 1);
 
         } else {
-            System.out.println("Command Not Found, Going Back To Home Page...");
+            System.out.println("Command Not Found.");
         }
     }
 
