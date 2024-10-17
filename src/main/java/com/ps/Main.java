@@ -95,7 +95,6 @@ public class Main {
 
         System.out.println("Please Enter The Details Of The Deposit...");
 
-        //  inputScanner.nextLine();
         System.out.print("Date(yyyy-MM-dd): ");
         String date = inputScanner.nextLine();
 
@@ -189,7 +188,6 @@ public class Main {
 
         System.out.println("Please Enter The Details Of The Payment...");
 
-      //  inputScanner.nextLine();
         System.out.print("Date(yyyy-MM-dd): ");
         String date = inputScanner.nextLine();
 
@@ -277,7 +275,7 @@ public class Main {
 
         do {
             System.out.println("Welcome To The Ledger Page!");
-            System.out.println("Please Enter Your Command: ");
+            System.out.println("Please Enter Your Command");
             System.out.println("1) Display All Entries");
             System.out.println("2) Display Deposits");
             System.out.println("3) Display Payments");
@@ -357,6 +355,7 @@ public class Main {
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search By Vendor");
+            System.out.println("6) Do A Custom Search");
             System.out.println("0) Go Back To Ledger Page");
             System.out.print("Command: ");
 
@@ -381,6 +380,10 @@ public class Main {
 
                 case 5:
                     searchByVendor();
+                    break;
+
+                case 6:
+                    displayCustomSearch();
                     break;
 
                 case 0:
@@ -451,19 +454,24 @@ public class Main {
 
         ArrayList<Transaction> previousMonthTransactions = new ArrayList<>();
 
+//        for (Transaction transaction : allTransactions) {
+//          TransactionDate = allTransactions.get(i).getDate()
         for (Transaction transaction : allTransactions) {
             LocalDate transactionDate = LocalDate.parse(transaction.getDate(), dateFormatter);
+//            int transactionMonth = transactionDate.getMonthValue();
+//            int transactionYear = transactionDate.getYear();
+
             if (transactionDate.getMonthValue() == previousMonth && transactionDate.getYear() == previousYear) {
                 previousMonthTransactions.add(transaction);
             }
         }
 
-        for (Transaction transaction : previousMonthTransactions) {
-            System.out.println(transaction);
-        }
-        if (previousMonthTransactions.isEmpty()) {
-            System.out.println("No Transactions Found");
-        }
+//        for (Transaction transaction : previousMonthTransactions) {
+//            System.out.println(transaction);
+//        }
+//        if (previousMonthTransactions.isEmpty()) {
+//            System.out.println("No Transactions Found");
+//        }
 
         Collections.sort(previousMonthTransactions, (a,b) -> {
 
@@ -541,5 +549,85 @@ public class Main {
 
     }
 
+    public static void displayCustomSearch() {
+
+        int subMenuCommand;
+
+        do {
+            System.out.println("Welcome To The Custom Search Page!");
+            System.out.println("Please Enter Your Command");
+            System.out.println("1) Search By Description");
+            System.out.println("2) Search By Amount");
+            System.out.println("3) Go Back To Reports Page");
+            System.out.println("0) Exit Application");
+            System.out.print("Command: ");
+
+            try {
+                subMenuCommand = commandScanner.nextInt();
+            } catch (InputMismatchException ime) {
+                ime.printStackTrace();
+                subMenuCommand = 0;
+            }
+
+            switch (subMenuCommand) {
+                case 1:
+                    searchByDescription();
+                    break;
+
+                case 2:
+                    searchByAmountRange();
+
+                case 3:
+                    System.out.println("Go Back To Reports Page");
+                    break;
+
+                case 0:
+                    System.out.println("Exiting Application, Goodbye...");
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("Command Not Found. Please Try Again.");
+            }
+        } while (true);
+    }
+
+    public static void searchByDescription() {
+        System.out.println("Search By Description");
+
+        System.out.println("Please Provide The Description Name That You're Looking For");
+        System.out.print("Description: ");
+        String typedDescription = inputScanner.nextLine();
+
+        for (int i = 0; i < allTransactions.size(); i++) {
+            Transaction descriptionTransaction = allTransactions.get(i);
+            if (descriptionTransaction.getDescription().equalsIgnoreCase(typedDescription)) {
+                System.out.println(descriptionTransaction);
+            }
+        }
+    }
+
+    public static void searchByAmountRange() {
+        System.out.println("Search By Amount Range");
+
+        System.out.println("Please Enter The Lowest Amount");
+        System.out.print("Min Amount: ");
+        float minAmount = inputScanner.nextFloat();
+
+        System.out.println("Please Enter The Largest Amount");
+        System.out.print("Max Amount: ");
+        float maxAmount = inputScanner.nextFloat();
+
+        for (int i = 0; i <allTransactions.size(); i++) {
+            Transaction rangeAmountTransactions = allTransactions.get(i);
+            float transactionAmount = rangeAmountTransactions.getAmount();
+
+            if (transactionAmount >= minAmount && transactionAmount <= maxAmount) {
+                System.out.println(rangeAmountTransactions);
+            }
+        }
+
+
+    }
 
 }
