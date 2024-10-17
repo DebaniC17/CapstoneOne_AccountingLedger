@@ -19,6 +19,8 @@ public class Main {
 
 
     public static void main(String[] args) {
+
+        //load transactions from file
         loadTransactionsFromFile();
 
         int mainMenuCommand;
@@ -32,6 +34,7 @@ public class Main {
             System.out.println("0) To Exit Application");
             System.out.print("Command: ");
 
+        // capture input command and handle incorrect input
             try {
                 mainMenuCommand = commandScanner.nextInt();
             } catch (InputMismatchException ime) {
@@ -64,6 +67,7 @@ public class Main {
 
     }
 
+    //load transactions from csv file into a list
     public static void loadTransactionsFromFile() {
 
         try {
@@ -72,6 +76,7 @@ public class Main {
             String firstLine = bufferedReader.readLine();
             String input;
 
+    //reach each line and parse the transaction properties
             while ((input = bufferedReader.readLine()) != null) {
                 String[] transactionsArr = input.split("\\|");
                 String date = transactionsArr[0];
@@ -112,6 +117,7 @@ public class Main {
         float amount = inputScanner.nextFloat();
 
         if (amount > 0) {
+            // create(write) a new transaction then add it to the csv list
             Transaction transaction = new Transaction(date, time, description, vendor, amount);
             allTransactions.add(transaction);
 
@@ -169,16 +175,17 @@ public class Main {
                         System.out.println("Command Not Found. Please Try Again.");
 
 
+                        //     }while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0) ;
                 }
-                while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0) ;
 
-            } while (subMenuCommand == 1);
+                } while (subMenuCommand == 1) ;
 
-        } else {
-            System.out.println("Command Not Found.");
+            } else {
+                System.out.println("Command Not Found.");
 
+            }
         }
-    }
+
 
 
     public static void makePayment() {
@@ -203,6 +210,7 @@ public class Main {
         System.out.print("Amount: ");
         float newAmount = inputScanner.nextFloat();
 
+    //to make input negative
         if (newAmount > 0) {
             newAmount = -newAmount;
 
@@ -259,7 +267,7 @@ public class Main {
                     default:
                         System.out.println("Command Not Found. Please Try Again.");
                 }
-                while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0) ;
+            //    while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0) ;
 
             } while (subMenuCommand == 1);
 
@@ -395,6 +403,7 @@ public class Main {
     }
 
     public static void displayMonthToDate() {
+
         LocalDate currentDate = LocalDate.now();
         int currentMonth = currentDate.getMonthValue();
         int currentYear = currentDate.getYear();
@@ -404,7 +413,7 @@ public class Main {
         System.out.println("Month to date transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-
+    //filter transactions by current month and year
         for (int i = 0; i < allTransactions.size(); i++) {
             String newTransactionDate = allTransactions.get(i).getDate();
             LocalDate transactionDate = LocalDate.parse(newTransactionDate, dateFormatter);
@@ -418,6 +427,7 @@ public class Main {
             }
         }
 
+    //sort transactions in descending order by date and time
         Collections.sort(filteredMonthlyTransactions, (a, b) -> {
             LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
             LocalDateTime dateTimeB = LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()));
@@ -439,6 +449,7 @@ public class Main {
 
 
     public static void displayPreviousMonth() {
+
         LocalDate currentDate = LocalDate.now();
         LocalDate previousMonthDate = currentDate.minusMonths(1);
         int previousMonth = previousMonthDate.getMonthValue();
@@ -478,6 +489,7 @@ public class Main {
     }
 
     public static void displayYearToDate() {
+
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
 
@@ -514,6 +526,7 @@ public class Main {
     }
 
     public static void displayPreviousYear() {
+
         LocalDate currentDate = LocalDate.now();
         LocalDate previousMonthDate = currentDate.minusYears(1);
         int previousYear = previousMonthDate.getYear();
@@ -550,23 +563,20 @@ public class Main {
     }
 
     public static void searchByVendor() {
-        System.out.print("Please Enter Vendor's Name: ");
 
-        //   inputScanner.nextLine();
+        System.out.print("Please Enter Vendor's Name: ");
         String nameToSearch = inputScanner.nextLine();
 
         ArrayList<Transaction> vendorsTransactions = new ArrayList<>();
 
-//        for (int i = 0; i < allTransactions.size(); i++) {
         for (Transaction vendorsTransaction : allTransactions)
-            //  Transaction vendorsTransaction = allTransactions.get(i);
+
             if (vendorsTransaction.getVendor().equalsIgnoreCase(nameToSearch)) {
                 vendorsTransactions.add(vendorsTransaction);
-                //       System.out.println(vendorsTransaction);
-
             }
-        if (vendorsTransactions.size() > 1) {
 
+    //if more than one transaction found then output in descending order
+        if (vendorsTransactions.size() > 1) {
 
             Collections.sort(vendorsTransactions, (a, b) -> {
                 LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
@@ -633,6 +643,7 @@ public class Main {
     }
 
     public static void searchByDescription() {
+
         System.out.println("Search By Description");
 
         System.out.println("Please Provide The Description Name That You're Looking For");
@@ -648,6 +659,7 @@ public class Main {
     }
 
     public static void searchByAmountRange() {
+
         System.out.println("Search By Amount Range");
 
         System.out.println("Please Enter The Lowest Amount");
