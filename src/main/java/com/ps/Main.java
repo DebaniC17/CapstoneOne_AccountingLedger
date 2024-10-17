@@ -181,7 +181,6 @@ public class Main {
     }
 
 
-
     public static void makePayment() {
 
         System.out.println("Welcome To The Payment Screen!");
@@ -260,7 +259,7 @@ public class Main {
                     default:
                         System.out.println("Command Not Found. Please Try Again.");
                 }
-                while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0);
+                while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0) ;
 
             } while (subMenuCommand == 1);
 
@@ -402,8 +401,9 @@ public class Main {
 
         ArrayList<Transaction> filteredMonthlyTransactions = new ArrayList<>();
 
-        System.out.println("Month To Date Transactions: ");
+        System.out.println("Month to date transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
         for (int i = 0; i < allTransactions.size(); i++) {
             String newTransactionDate = allTransactions.get(i).getDate();
@@ -415,33 +415,59 @@ public class Main {
             if (transactionMonth == currentMonth && transactionYear == currentYear) {
                 filteredMonthlyTransactions.add(allTransactions.get(i));
 
-                System.out.println(allTransactions.get(i));
+                //      System.out.println(allTransactions.get(i));
             }
         }
 
-        System.out.println("Printing All Transactions From The Month To Date Methods");
-        System.out.println(allTransactions);
+//        System.out.println("Printing all transactions from the month to date methods");
+//        System.out.println(allTransactions);
 
         Collections.sort(filteredMonthlyTransactions, (a, b) -> {
             LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
             LocalDateTime dateTimeB = LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()));
 
-            if (dateTimeA.isBefore(dateTimeB)) {
-                return -1;
-            } else if (dateTimeB.isAfter(dateTimeA)) {
-                return 1;
-            } else {
-                return 0;
-            }
+//            if (dateTimeA.isBefore(dateTimeB)) {
+//                return -1;
+//            } else if (dateTimeB.isAfter(dateTimeA)) {
+//                return 1;
+//            } else {
+            return dateTimeB.compareTo(dateTimeA);
+            //  }
         });
 
         for (Transaction trans : filteredMonthlyTransactions) {
             System.out.println(trans);
         }
-        //sadly still printing in ascending order >.<
-        //keep researching comparedTo() method
-        //or i could lookup how to read the file backwards
     }
+
+//
+//        Collections.sort(filteredMonthlyTransactions, (a, b) -> {
+//
+//                    if (LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()))
+//                            .isBefore(LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()))
+//                            )) {
+//
+//                        // System.out.println(a);
+//                        filteredMonthlyTransactions.add(0, b);
+//                    } else {
+//                        filteredMonthlyTransactions.add(b);
+//                    }
+////                           return filteredMonthlyTransactions.size(); // both ways print out in descending order,but reprints alltransactions on one line afterwards
+//                    return 0;
+//                }
+//        );
+//        for (Transaction trans : filteredMonthlyTransactions) {
+//            System.out.println(trans);
+//
+//            // what if instead of one big expression lines 343-345, i could make them their own variables to later compare them in the return statement
+//
+//        }
+//    }
+
+    //sadly still printing in ascending order >.<
+    //keep researching comparedTo() method
+    //or i could lookup how to read the file backwards
+
 
     public static void displayPreviousMonth() {
         LocalDate currentDate = LocalDate.now();
@@ -473,7 +499,7 @@ public class Main {
 //            System.out.println("No Transactions Found");
 //        }
 
-        Collections.sort(previousMonthTransactions, (a,b) -> {
+        Collections.sort(previousMonthTransactions, (a, b) -> {
 
             LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
             LocalDateTime dateTimeB = LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()));
@@ -618,7 +644,7 @@ public class Main {
         System.out.print("Max Amount: ");
         float maxAmount = inputScanner.nextFloat();
 
-        for (int i = 0; i <allTransactions.size(); i++) {
+        for (int i = 0; i < allTransactions.size(); i++) {
             Transaction rangeAmountTransactions = allTransactions.get(i);
             float transactionAmount = rangeAmountTransactions.getAmount();
 
