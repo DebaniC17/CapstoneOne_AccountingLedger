@@ -382,7 +382,7 @@ public class Main {
                     break;
 
                 case 6:
-                    displayCustomSearch();
+                    displayAddedSearchFeatures();
                     break;
 
                 case 0:
@@ -415,58 +415,27 @@ public class Main {
             if (transactionMonth == currentMonth && transactionYear == currentYear) {
                 filteredMonthlyTransactions.add(allTransactions.get(i));
 
-                //      System.out.println(allTransactions.get(i));
             }
         }
-
-//        System.out.println("Printing all transactions from the month to date methods");
-//        System.out.println(allTransactions);
 
         Collections.sort(filteredMonthlyTransactions, (a, b) -> {
             LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
             LocalDateTime dateTimeB = LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()));
 
-//            if (dateTimeA.isBefore(dateTimeB)) {
-//                return -1;
-//            } else if (dateTimeB.isAfter(dateTimeA)) {
-//                return 1;
-//            } else {
             return dateTimeB.compareTo(dateTimeA);
-            //  }
+
         });
 
-        for (Transaction trans : filteredMonthlyTransactions) {
-            System.out.println(trans);
+        if (filteredMonthlyTransactions.isEmpty()) {
+            System.out.println("No Transactions Found, Going Back To The Reports Page...");
+        } else {
+            for (Transaction transaction : filteredMonthlyTransactions) {
+                System.out.println(transaction);
+            }
+
+
         }
     }
-
-//
-//        Collections.sort(filteredMonthlyTransactions, (a, b) -> {
-//
-//                    if (LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()))
-//                            .isBefore(LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()))
-//                            )) {
-//
-//                        // System.out.println(a);
-//                        filteredMonthlyTransactions.add(0, b);
-//                    } else {
-//                        filteredMonthlyTransactions.add(b);
-//                    }
-////                           return filteredMonthlyTransactions.size(); // both ways print out in descending order,but reprints alltransactions on one line afterwards
-//                    return 0;
-//                }
-//        );
-//        for (Transaction trans : filteredMonthlyTransactions) {
-//            System.out.println(trans);
-//
-//            // what if instead of one big expression lines 343-345, i could make them their own variables to later compare them in the return statement
-//
-//        }
-//    }
-
-    //sadly still printing in ascending order >.<
-    //keep researching comparedTo() method
-    //or i could lookup how to read the file backwards
 
 
     public static void displayPreviousMonth() {
@@ -480,24 +449,13 @@ public class Main {
 
         ArrayList<Transaction> previousMonthTransactions = new ArrayList<>();
 
-//        for (Transaction transaction : allTransactions) {
-//          TransactionDate = allTransactions.get(i).getDate()
         for (Transaction transaction : allTransactions) {
             LocalDate transactionDate = LocalDate.parse(transaction.getDate(), dateFormatter);
-//            int transactionMonth = transactionDate.getMonthValue();
-//            int transactionYear = transactionDate.getYear();
 
             if (transactionDate.getMonthValue() == previousMonth && transactionDate.getYear() == previousYear) {
                 previousMonthTransactions.add(transaction);
             }
         }
-
-//        for (Transaction transaction : previousMonthTransactions) {
-//            System.out.println(transaction);
-//        }
-//        if (previousMonthTransactions.isEmpty()) {
-//            System.out.println("No Transactions Found");
-//        }
 
         Collections.sort(previousMonthTransactions, (a, b) -> {
 
@@ -508,10 +466,15 @@ public class Main {
 
         });
 
-        for (Transaction transaction : previousMonthTransactions) {
-            System.out.println(transaction);
-        }
+        if (previousMonthTransactions.isEmpty()) {
+            System.out.println("No Transactions Found, Going Back To The Reports Page...");
+        } else {
+            for (Transaction transaction : previousMonthTransactions) {
+                System.out.println(transaction);
+            }
 
+
+        }
     }
 
     public static void displayYearToDate() {
@@ -525,13 +488,27 @@ public class Main {
 
         for (Transaction transaction : allTransactions) {
             LocalDate transactionDate = LocalDate.parse(transaction.getDate(), dateFormatter);
+
             if (transactionDate.getYear() == currentYear) {
                 yearlyTransactions.add(transaction);
             }
-
         }
-        for (Transaction transaction : yearlyTransactions) {
-            System.out.println(transaction);
+
+        Collections.sort(yearlyTransactions, (a, b) -> {
+            LocalDateTime dateYearA = LocalDateTime.of(LocalDate.parse(a.getDate(), dateFormatter), LocalTime.parse(a.getTime()));
+            LocalDateTime dateYearB = LocalDateTime.of(LocalDate.parse(b.getDate(), dateFormatter), LocalTime.parse(b.getTime()));
+
+            return dateYearB.compareTo(dateYearA);
+
+        });
+
+        if (yearlyTransactions.isEmpty()) {
+            System.out.println("No Transactions Found, Going Back To The Reports Page...");
+        } else {
+
+            for (Transaction transaction : yearlyTransactions) {
+                System.out.println(transaction);
+            }
         }
 
     }
@@ -553,8 +530,21 @@ public class Main {
             }
         }
 
-        for (Transaction transaction : previousYearTransactions) {
-            System.out.println(transaction);
+        Collections.sort(previousYearTransactions, (a, b) -> {
+            LocalDateTime dateYearA = LocalDateTime.of(LocalDate.parse(a.getDate(), dateFormatter), LocalTime.parse(a.getTime()));
+            LocalDateTime dateYearB = LocalDateTime.of(LocalDate.parse(b.getDate(), dateFormatter), LocalTime.parse(b.getTime()));
+
+            return dateYearB.compareTo(dateYearA);
+
+        });
+
+        if (previousYearTransactions.isEmpty()) {
+            System.out.println("No Transactions Found, Going Back To The Reports Page...");
+        } else {
+
+            for (Transaction transaction : previousYearTransactions) {
+                System.out.println(transaction);
+            }
         }
 
     }
@@ -562,25 +552,49 @@ public class Main {
     public static void searchByVendor() {
         System.out.print("Please Enter Vendor's Name: ");
 
-
-        inputScanner.nextLine();
+        //   inputScanner.nextLine();
         String nameToSearch = inputScanner.nextLine();
 
-        for (int i = 0; i < allTransactions.size(); i++) {
-            Transaction vendorsTransaction = allTransactions.get(i);
+        ArrayList<Transaction> vendorsTransactions = new ArrayList<>();
+
+//        for (int i = 0; i < allTransactions.size(); i++) {
+        for (Transaction vendorsTransaction : allTransactions)
+            //  Transaction vendorsTransaction = allTransactions.get(i);
             if (vendorsTransaction.getVendor().equalsIgnoreCase(nameToSearch)) {
-                System.out.println(vendorsTransaction);
+                vendorsTransactions.add(vendorsTransaction);
+                //       System.out.println(vendorsTransaction);
+
             }
+        if (vendorsTransactions.size() > 1) {
+
+
+            Collections.sort(vendorsTransactions, (a, b) -> {
+                LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
+                LocalDateTime dateTimeB = LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()));
+
+                return dateTimeB.compareTo(dateTimeA);
+
+            });
         }
 
+        if (vendorsTransactions.isEmpty()) {
+            System.out.println("No Transactions Found, Going Back To The Reports Page...");
+        } else {
+
+            for (Transaction transaction : vendorsTransactions) {
+                System.out.println(transaction);
+
+            }
+        }
     }
 
-    public static void displayCustomSearch() {
+
+    public static void displayAddedSearchFeatures() {
 
         int subMenuCommand;
 
         do {
-            System.out.println("Welcome To The Custom Search Page!");
+            System.out.println("Welcome To The Added Search Features Page!");
             System.out.println("Please Enter Your Command");
             System.out.println("1) Search By Description");
             System.out.println("2) Search By Amount");
