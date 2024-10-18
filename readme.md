@@ -95,3 +95,7 @@ Finding out how to sort the transactions by date and time in descending order wa
 - The collection.sort() method is used to sort the elements present in the specified list of collections in ascending order. 
 - The .compareTo() method is used to compare two objects to determine their order. Which is what allowed me to have my outputs in descending order. 
 
+## A different approach for descending order
+![Failed attempt #1](images%2Fdesc%20order%20pt%203%20w%20compareTo.png)
+
+The .isAfter() and .isBefore() are methods used to compare two date or time object. Sadly every which way I played with the methods it stayed in ascending order.  

@@ -34,7 +34,7 @@ public class Main {
             System.out.println("0) To Exit Application");
             System.out.print("Command: ");
 
-        // capture input command and handle incorrect input
+            // capture input command and handle incorrect input
             try {
                 mainMenuCommand = commandScanner.nextInt();
             } catch (InputMismatchException ime) {
@@ -76,7 +76,7 @@ public class Main {
             String firstLine = bufferedReader.readLine();
             String input;
 
-    //reach each line and parse the transaction properties
+            //reach each line and parse the transaction properties
             while ((input = bufferedReader.readLine()) != null) {
                 String[] transactionsArr = input.split("\\|");
                 String date = transactionsArr[0];
@@ -97,7 +97,6 @@ public class Main {
     public static void addDeposit() {
 
         System.out.println("Welcome To The Deposit Screen!");
-
         System.out.println("Please Enter The Details Of The Deposit...");
 
         System.out.print("Date(yyyy-MM-dd): ");
@@ -115,6 +114,8 @@ public class Main {
 
         System.out.print("Amount: ");
         float amount = inputScanner.nextFloat();
+
+        inputScanner.nextLine();
 
         if (amount > 0) {
             // create(write) a new transaction then add it to the csv list
@@ -160,6 +161,7 @@ public class Main {
                 switch (subMenuCommand) {
                     case 1:
                         System.out.println("Back To The Deposit Screen!");
+                        addDeposit();
                         break;
 
                     case 2:
@@ -174,18 +176,17 @@ public class Main {
                     default:
                         System.out.println("Command Not Found. Please Try Again.");
 
-
-                        //     }while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0) ;
                 }
+            } while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0);
 
-                } while (subMenuCommand == 1) ;
 
-            } else {
-                System.out.println("Command Not Found.");
+            //    while (subMenuCommand == 1) ;
 
-            }
+        } else {
+            System.out.println("Command Not Found.");
         }
 
+    }
 
 
     public static void makePayment() {
@@ -211,7 +212,9 @@ public class Main {
         System.out.print("Amount: ");
         float newAmount = inputScanner.nextFloat();
 
-    //to make input negative
+        inputScanner.nextLine();
+
+        //to make input negative
         if (newAmount > 0) {
             newAmount = -newAmount;
 
@@ -255,6 +258,7 @@ public class Main {
                 switch (subMenuCommand) {
                     case 1:
                         System.out.println("Welcome Back To The Payment Menu!");
+                        makePayment();
                         break;
 
                     case 2:
@@ -269,9 +273,9 @@ public class Main {
                     default:
                         System.out.println("Command Not Found. Please Try Again.");
                 }
-            //    while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0) ;
+            } while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0);
 
-            } while (subMenuCommand == 1);
+            //  } while (subMenuCommand == 1);
 
         } else {
             System.out.println("Command Not Found.");
@@ -327,9 +331,34 @@ public class Main {
 
     public static void allTransactions() {
         System.out.println("Display All Transactions");
-        for (int i = 0; i < allTransactions.size(); i++) {
-            System.out.println(allTransactions.get(i));
+//        for (int i = 0; i < allTransactions.size(); i++) {
+//            System.out.println(allTransactions.get(i));
+//        }
+        if (allTransactions.isEmpty()) {
+            System.out.println("No Transactions Found, Going Back To The Main Menu...");
+            return;
         }
+        //    if (allTransactions.size() > 1) {
+
+        Collections.sort(allTransactions, (a, b) -> {
+            LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
+            LocalDateTime dateTimeB = LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()));
+
+            return dateTimeB.compareTo(dateTimeA);
+
+        });
+
+
+//        if (allTransactions.isEmpty()) {
+//            System.out.println("No Transactions Found, Going Back To The Reports Menu...");
+//        } else {
+
+        for (Transaction transaction : allTransactions) {
+            System.out.println(transaction);
+
+        }
+
+
     }
 
     public static void allDeposits() {
@@ -430,7 +459,7 @@ public class Main {
 
         }
 
-        Collections.sort(filteredMonthlyTransactions, (a,b) -> {
+        Collections.sort(filteredMonthlyTransactions, (a, b) -> {
 
             LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
             LocalDateTime dateTimeB = LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()));
@@ -562,7 +591,12 @@ public class Main {
 
     public static void searchByVendor() {
 
-        System.out.print("Please Enter Vendor's Name: ");
+        System.out.println("Search By Vendor");
+
+        System.out.println("Please Enter The Vendor's Name That You're Looking For");
+        System.out.print("Name: ");
+//
+//        inputScanner.nextLine();
         String nameToSearch = inputScanner.nextLine();
 
         ArrayList<Transaction> vendorsTransactions = new ArrayList<>();
@@ -573,7 +607,7 @@ public class Main {
                 vendorsTransactions.add(vendorsTransaction);
             }
 
-    //if more than one transaction found then output in descending order
+        //if more than one transaction found then output in descending order
         if (vendorsTransactions.size() > 1) {
 
             Collections.sort(vendorsTransactions, (a, b) -> {
@@ -648,12 +682,40 @@ public class Main {
         System.out.print("Description: ");
         String typedDescription = inputScanner.nextLine();
 
-        for (int i = 0; i < allTransactions.size(); i++) {
-            Transaction descriptionTransaction = allTransactions.get(i);
+        ArrayList<Transaction> descriptionTransactions = new ArrayList<>();
+
+
+//        for (int i = 0; i < allTransactions.size(); i++) {
+//            Transaction descriptionTransaction = allTransactions.get(i);
+        for (Transaction descriptionTransaction : allTransactions)
+
             if (descriptionTransaction.getDescription().equalsIgnoreCase(typedDescription)) {
-                System.out.println(descriptionTransaction);
+                //   System.out.println(descriptionTransactions);
+                descriptionTransactions.add(descriptionTransaction);
+            }
+
+
+        if (descriptionTransactions.size() > 1) {
+
+            Collections.sort(descriptionTransactions, (a, b) -> {
+                LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
+                LocalDateTime dateTimeB = LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()));
+
+                return dateTimeB.compareTo(dateTimeA);
+
+            });
+        }
+
+        if (descriptionTransactions.isEmpty()) {
+            System.out.println("No Transactions Found, Going Back To The Reports Menu...");
+        } else {
+
+            for (Transaction transaction : descriptionTransactions) {
+                System.out.println(transaction);
+
             }
         }
+
     }
 
     public static void searchByAmountRange() {
