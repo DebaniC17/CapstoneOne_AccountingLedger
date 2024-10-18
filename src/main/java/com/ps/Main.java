@@ -179,9 +179,6 @@ public class Main {
                 }
             } while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0);
 
-
-            //    while (subMenuCommand == 1) ;
-
         } else {
             System.out.println("Command Not Found.");
         }
@@ -195,7 +192,6 @@ public class Main {
 
         System.out.println("Please Enter The Details Of The Payment...");
 
-      //  inputScanner.nextLine();
         System.out.print("Date(yyyy-MM-dd): ");
         String date = inputScanner.nextLine();
 
@@ -275,8 +271,6 @@ public class Main {
                 }
             } while (subMenuCommand != 1 && subMenuCommand != 2 && subMenuCommand != 0);
 
-            //  } while (subMenuCommand == 1);
-
         } else {
             System.out.println("Command Not Found.");
         }
@@ -331,14 +325,11 @@ public class Main {
 
     public static void allTransactions() {
         System.out.println("Display All Transactions");
-//        for (int i = 0; i < allTransactions.size(); i++) {
-//            System.out.println(allTransactions.get(i));
-//        }
+
         if (allTransactions.isEmpty()) {
             System.out.println("No Transactions Found, Going Back To The Main Menu...");
             return;
         }
-        //    if (allTransactions.size() > 1) {
 
         Collections.sort(allTransactions, (a, b) -> {
             LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
@@ -347,11 +338,6 @@ public class Main {
             return dateTimeB.compareTo(dateTimeA);
 
         });
-
-
-//        if (allTransactions.isEmpty()) {
-//            System.out.println("No Transactions Found, Going Back To The Reports Menu...");
-//        } else {
 
         for (Transaction transaction : allTransactions) {
             System.out.println(transaction);
@@ -452,7 +438,7 @@ public class Main {
             int transactionYear = transactionDate.getYear();
 
             if (transactionMonth == currentMonth && transactionYear == currentYear) {
-                //     System.out.println(allTransactions.get(i));
+
                 filteredMonthlyTransactions.add(transaction);
 
             }
@@ -684,16 +670,12 @@ public class Main {
 
         ArrayList<Transaction> descriptionTransactions = new ArrayList<>();
 
-
-//        for (int i = 0; i < allTransactions.size(); i++) {
-//            Transaction descriptionTransaction = allTransactions.get(i);
         for (Transaction descriptionTransaction : allTransactions)
 
             if (descriptionTransaction.getDescription().equalsIgnoreCase(typedDescription)) {
-                //   System.out.println(descriptionTransactions);
+
                 descriptionTransactions.add(descriptionTransaction);
             }
-
 
         if (descriptionTransactions.size() > 1) {
 
