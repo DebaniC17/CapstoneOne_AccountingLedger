@@ -195,7 +195,7 @@ public class Main {
 
         System.out.println("Please Enter The Details Of The Payment...");
 
-        inputScanner.nextLine();
+      //  inputScanner.nextLine();
         System.out.print("Date(yyyy-MM-dd): ");
         String date = inputScanner.nextLine();
 

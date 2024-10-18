@@ -76,6 +76,9 @@ The user can:
 ## Payment submenu
 ![Payment submenu](images%2FPayment%20submenu.png)
 
+## Display of all my transactions
+![Display all my transactions.png](images%2FDisplay%20all%20my%20transactions.png)
+
 ## Resources
 
 Here are some helpful resources that I used for to sort in descending order and for date/time:
