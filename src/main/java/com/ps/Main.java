@@ -30,7 +30,7 @@ public class Main {
             System.out.println("Please Enter Your Command: ");
             System.out.println("1) To Add Deposit");
             System.out.println("2) To Make Payment (Debit)");
-            System.out.println("3) Display Ledger Screen");
+            System.out.println("3) Display Ledger Menu");
             System.out.println("0) To Exit Application");
             System.out.print("Command: ");
 
@@ -146,7 +146,7 @@ public class Main {
             do {
                 System.out.println("What Would You Like To Do Next?");
                 System.out.println("1) Add Another Deposit");
-                System.out.println("2) Go To Home Page");
+                System.out.println("2) Go To Home Menu");
                 System.out.println("0) Exit The Application");
                 System.out.print("Command: ");
 
@@ -163,7 +163,7 @@ public class Main {
                         break;
 
                     case 2:
-                        System.out.println("Going Back To Home Page...");
+                        System.out.println("Going Back To Home Menu...");
                         break;
 
                     case 0:
@@ -240,7 +240,7 @@ public class Main {
             do {
                 System.out.println("What Would You Like To Do Next?");
                 System.out.println("1) Make Another Payment");
-                System.out.println("2) Go To Home Page");
+                System.out.println("2) Go To Home Menu");
                 System.out.println("0) Exit Application");
 
                 try {
@@ -252,11 +252,11 @@ public class Main {
 
                 switch (subMenuCommand) {
                     case 1:
-                        System.out.println("Welcome Back To The Payment Screen!");
+                        System.out.println("Welcome Back To The Payment Menu!");
                         break;
 
                     case 2:
-                        System.out.println("Going To Hope Page...");
+                        System.out.println("Going To Hope Menu...");
                         break;
 
                     case 0:
@@ -281,13 +281,13 @@ public class Main {
         int subMenuCommand;
 
         do {
-            System.out.println("Welcome To The Ledger Page!");
+            System.out.println("Welcome To The Ledger Menu!");
             System.out.println("Please Enter Your Command");
             System.out.println("1) Display All Entries");
             System.out.println("2) Display Deposits");
             System.out.println("3) Display Payments");
-            System.out.println("4) Display Reports Page");
-            System.out.println("0) Go Back To Home Page");
+            System.out.println("4) Display Reports Menu");
+            System.out.println("0) Go Back To Home Menu");
             System.out.print("Command: ");
 
             subMenuCommand = commandScanner.nextInt();
@@ -310,7 +310,7 @@ public class Main {
                     break;
 
                 case 0:
-                    System.out.println("Going Back To Home Page...");
+                    System.out.println("Going Back To Home Menu...");
                     break;
 
                 default:
@@ -355,7 +355,7 @@ public class Main {
         int subMenuCommand;
 
         do {
-            System.out.println("Welcome To The Reports Page!");
+            System.out.println("Welcome To The Reports Menu!");
             System.out.println("Please Enter Your Command");
             System.out.println("1) Month To Date");
             System.out.println("2) Previous Month");
@@ -363,7 +363,7 @@ public class Main {
             System.out.println("4) Previous Year");
             System.out.println("5) Search By Vendor");
             System.out.println("6) Do A Custom Search");
-            System.out.println("0) Go Back To Ledger Page");
+            System.out.println("0) Go Back To Ledger Menu");
             System.out.print("Command: ");
 
             subMenuCommand = commandScanner.nextInt();
@@ -394,7 +394,7 @@ public class Main {
                     break;
 
                 case 0:
-                    System.out.println("Going Back To Ledger Page...");
+                    System.out.println("Going Back To Ledger Menu...");
 
                 default:
                     System.out.println("Command Not Found, Please Try Again");
@@ -437,7 +437,7 @@ public class Main {
         });
 
         if (filteredMonthlyTransactions.isEmpty()) {
-            System.out.println("No Transactions Found, Going Back To The Reports Page...");
+            System.out.println("No Transactions Found, Going Back To The Reports Menu...");
         } else {
             for (Transaction transaction : filteredMonthlyTransactions) {
                 System.out.println(transaction);
@@ -478,7 +478,7 @@ public class Main {
         });
 
         if (previousMonthTransactions.isEmpty()) {
-            System.out.println("No Transactions Found, Going Back To The Reports Page...");
+            System.out.println("No Transactions Found, Going Back To The Reports Menu...");
         } else {
             for (Transaction transaction : previousMonthTransactions) {
                 System.out.println(transaction);
@@ -515,7 +515,7 @@ public class Main {
         });
 
         if (yearlyTransactions.isEmpty()) {
-            System.out.println("No Transactions Found, Going Back To The Reports Page...");
+            System.out.println("No Transactions Found, Going Back To The Reports Menu...");
         } else {
 
             for (Transaction transaction : yearlyTransactions) {
@@ -552,7 +552,7 @@ public class Main {
         });
 
         if (previousYearTransactions.isEmpty()) {
-            System.out.println("No Transactions Found, Going Back To The Reports Page...");
+            System.out.println("No Transactions Found, Going Back To The Reports Menu...");
         } else {
 
             for (Transaction transaction : previousYearTransactions) {
@@ -588,7 +588,7 @@ public class Main {
         }
 
         if (vendorsTransactions.isEmpty()) {
-            System.out.println("No Transactions Found, Going Back To The Reports Page...");
+            System.out.println("No Transactions Found, Going Back To The Reports Menu...");
         } else {
 
             for (Transaction transaction : vendorsTransactions) {
@@ -604,11 +604,11 @@ public class Main {
         int subMenuCommand;
 
         do {
-            System.out.println("Welcome To The Added Search Features Page!");
+            System.out.println("Welcome To The Added Search Features Menu!");
             System.out.println("Please Enter Your Command");
             System.out.println("1) Search By Description");
             System.out.println("2) Search By Amount");
-            System.out.println("3) Go Back To Reports Page");
+            System.out.println("3) Go Back To Reports Menu");
             System.out.println("0) Exit Application");
             System.out.print("Command: ");
 
@@ -628,7 +628,7 @@ public class Main {
                     searchByAmountRange();
 
                 case 3:
-                    System.out.println("Go Back To Reports Page");
+                    System.out.println("Go Back To Reports Menu");
                     break;
 
                 case 0:
