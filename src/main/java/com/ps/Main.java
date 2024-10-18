@@ -194,6 +194,7 @@ public class Main {
 
         System.out.println("Please Enter The Details Of The Payment...");
 
+        inputScanner.nextLine();
         System.out.print("Date(yyyy-MM-dd): ");
         String date = inputScanner.nextLine();
 
@@ -219,7 +220,7 @@ public class Main {
             allTransactions.add(transaction);
 
             try {
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions,csv", true));
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
                 bufferedWriter.write(String.format("\n%s|%s|%s|%s|%.2f",
                         transaction.getDate(),
                         transaction.getTime(),
@@ -242,6 +243,7 @@ public class Main {
                 System.out.println("1) Make Another Payment");
                 System.out.println("2) Go To Home Menu");
                 System.out.println("0) Exit Application");
+                System.out.print("Command: ");
 
                 try {
                     subMenuCommand = commandScanner.nextInt();
@@ -403,32 +405,33 @@ public class Main {
     }
 
     public static void displayMonthToDate() {
-
         LocalDate currentDate = LocalDate.now();
         int currentMonth = currentDate.getMonthValue();
         int currentYear = currentDate.getYear();
 
-        ArrayList<Transaction> filteredMonthlyTransactions = new ArrayList<>();
-
         System.out.println("Month to date transactions: ");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    //filter transactions by current month and year
+        ArrayList<Transaction> filteredMonthlyTransactions = new ArrayList<>();
+
         for (int i = 0; i < allTransactions.size(); i++) {
             String newTransactionDate = allTransactions.get(i).getDate();
             LocalDate transactionDate = LocalDate.parse(newTransactionDate, dateFormatter);
+            Transaction transaction = allTransactions.get(i);
 
             int transactionMonth = transactionDate.getMonthValue();
             int transactionYear = transactionDate.getYear();
 
             if (transactionMonth == currentMonth && transactionYear == currentYear) {
-                filteredMonthlyTransactions.add(allTransactions.get(i));
+                //     System.out.println(allTransactions.get(i));
+                filteredMonthlyTransactions.add(transaction);
 
             }
+
         }
 
-    //sort transactions in descending order by date and time
-        Collections.sort(filteredMonthlyTransactions, (a, b) -> {
+        Collections.sort(filteredMonthlyTransactions, (a,b) -> {
+
             LocalDateTime dateTimeA = LocalDateTime.of(LocalDate.parse(a.getDate()), LocalTime.parse(a.getTime()));
             LocalDateTime dateTimeB = LocalDateTime.of(LocalDate.parse(b.getDate()), LocalTime.parse(b.getTime()));
 
@@ -436,15 +439,10 @@ public class Main {
 
         });
 
-        if (filteredMonthlyTransactions.isEmpty()) {
-            System.out.println("No Transactions Found, Going Back To The Reports Menu...");
-        } else {
-            for (Transaction transaction : filteredMonthlyTransactions) {
-                System.out.println(transaction);
-            }
-
-
+        for (Transaction transaction : filteredMonthlyTransactions) {
+            System.out.println(transaction);
         }
+
     }
 
 
